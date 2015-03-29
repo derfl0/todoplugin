@@ -54,6 +54,7 @@ class TodoPlugin extends StudIPPlugin implements SystemPlugin, PortalPlugin {
     public function getPortalTemplate() {
 
         self::addStylesheet('/assets/style.less');
+        PageLayout::addScript($this->getPluginURL() . '/assets/application.js');
 
         $templatefactory = new Flexi_TemplateFactory(__DIR__ . "/views");
         $template = $templatefactory->open("show/index.php");

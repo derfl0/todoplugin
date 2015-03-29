@@ -1,5 +1,3 @@
-(function ($) {
-
-    // JS
-
-}(jQuery));
+$(document).ready(function(){
+    $('input[name="todo_until"]').datepicker();
+});
