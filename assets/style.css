@@ -92,3 +92,10 @@ table.todos tr.done {
 table.todos tr input {
   width: 100%;
 }
+a.todo_link {
+  text-decoration-line: underline;
+}
+a.accepted-todo {
+  color: #69767f;
+  text-decoration-line: line-through;
+}

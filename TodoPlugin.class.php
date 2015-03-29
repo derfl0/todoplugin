@@ -59,11 +59,14 @@ class TodoPlugin extends StudIPPlugin implements SystemPlugin, PortalPlugin {
 
         // Register markup
         StudipFormat::addStudipMarkup('todoplugin', "\[todo\s?([^\]])*\]", "\[\/todo\]", 'TodoPlugin::markup');
+        
+        // Register javascript for links
+        PageLayout::addScript($this->getPluginURL() . '/assets/todo_everywhere.js');
+        self::addStylesheet('/assets/style.less');
     }
 
     public function getPortalTemplate() {
 
-        self::addStylesheet('/assets/style.less');
         PageLayout::addScript($this->getPluginURL() . '/assets/application.js');
 
         $templatefactory = new Flexi_TemplateFactory(__DIR__ . "/views");
@@ -100,7 +103,7 @@ class TodoPlugin extends StudIPPlugin implements SystemPlugin, PortalPlugin {
         if ($matches[0] != "[todo]") {
             $linkParams['todo_until'] = trim(ltrim(rtrim($matches[0], ']'), '[todo'));
         }
-        return "<a href='" . URLHelper::getLink('', $linkParams) . "'>" . $contents . "</a>";
+        return "<a class='todo_link' href='" . URLHelper::getLink('', $linkParams) . "'>" . $contents . "</a>";
     }
 
 }
