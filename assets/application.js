@@ -6,12 +6,11 @@ $(document).ready(function () {
 STUDIP.todo = {
     init: function () {
         $('input[name="todo_until"]').datetimepicker({
-            onSelect: function (dateText, inst) {
+            onClose: function () {
                 if ($('input[name="new_todo"]').val() !== '') {
                     $('form#new_todo_form').submit();
                 }
             }
-
         });
         $('button[name="new_todo_button"]').parent('td').hide();
         $('input[name="todo_until"]').parent('td').prop('colspan', '2');
