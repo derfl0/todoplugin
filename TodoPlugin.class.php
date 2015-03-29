@@ -17,7 +17,7 @@ class TodoPlugin extends StudIPPlugin implements SystemPlugin, PortalPlugin {
 
         // Insert new todo
         if (Request::submitted('new_todo')) {
-            Todo::create(array(
+            $todo = Todo::create(array(
                 'user_id' => User::findCurrent()->id,
                 'text' => Request::get('new_todo'),
                 'expires' => Request::get('todo_until') ? strtotime(Request::get('todo_until')) : null
@@ -26,6 +26,16 @@ class TodoPlugin extends StudIPPlugin implements SystemPlugin, PortalPlugin {
             if (Request::get('todo_until')) {
                 $info[] = Request::get('todo_until');
             }
+
+            // answer on xhr
+            if (Request::isXhr()) {
+                $templatefactory = new Flexi_TemplateFactory(__DIR__ . "/views");
+                $template = $templatefactory->open("show/todo.php");
+                $template->set_attribute("todo", $todo);
+                echo $template->render();
+                die;
+            }
+
             PageLayout::postMessage(MessageBox::info(dgettext('todos', 'Neue Aufgabe hinzugefügt'), $info));
         }
 
@@ -90,7 +100,7 @@ class TodoPlugin extends StudIPPlugin implements SystemPlugin, PortalPlugin {
         if ($matches[0] != "[todo]") {
             $linkParams['todo_until'] = trim(ltrim(rtrim($matches[0], ']'), '[todo'));
         }
-        return "<a href='".URLHelper::getLink('', $linkParams)."'>".$contents."</a>";
+        return "<a href='" . URLHelper::getLink('', $linkParams) . "'>" . $contents . "</a>";
     }
 
 }

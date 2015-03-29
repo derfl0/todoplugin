@@ -5,33 +5,10 @@
         <col width="0">
     </colgroup>
     <? foreach ($todos as $todo): ?>
-        <tr class="<?= $todo->done ? 'done' : '' ?> <?= $todo->expires && $todo->expires < time() ? 'expired' : '' ?>">
-            <td>
-                <?= htmlReady($todo->text) ?>
-            </td>
-            <td>
-                <?= htmlReady($todo->getDate()) ?>
-            </td>
-            <td class="actions">
-                <? if ($todo->done): ?>
-                    <a href="<?= UrlHelper::getLink('', array('todo_undo' => $todo->id)); ?>">
-                        <?= Assets::img('icons/16/blue/decline.png'); ?>
-                    </a>
-                <? else: ?>
-                    <a href="<?= UrlHelper::getLink('', array('todo_done' => $todo->id)); ?>">
-                        <?= Assets::img('icons/16/blue/accept.png'); ?>
-                    </a>
-                <? endif; ?>
-                <a>
-                    <a href="<?= UrlHelper::getLink('', array('delete_todo' => $todo->id)); ?>">
-                        <?= Assets::img('icons/16/blue/trash.png'); ?>
-                    </a>
-                </a>
-            </td>
-        </tr>
+        <?= $this->render_partial('show/todo.php', compact('todo')); ?>
     <? endforeach; ?>
     <tr>
-    <form class="studip_form" method="post">
+    <form class="studip_form" method="post" id="new_todo_form">
         <td>
             <input type="text" name="new_todo" placeholder="<?= dgettext('todo', 'Neue Aufgabe anlegen'); ?>">
         </td>
