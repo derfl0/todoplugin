@@ -74,6 +74,12 @@ class TodoPlugin extends StudIPPlugin implements SystemPlugin, PortalPlugin {
 
         $todos = ToDo::getActive();
         $template->set_attribute("todos", $todos);
+        
+        // Add help navigation
+        $navigation = new Navigation('', 'http://docs.studip.de/help/2.5/de/Basis/PluginToDoWidget');
+        $navigation->setImage('icons/16/blue/question.png', array('title' => _('Hilfe'), 'target' => '_blank'));
+        $template->icons = array($navigation);
+        
         return $template;
     }
 
