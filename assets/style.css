@@ -137,3 +137,23 @@ a.accepted-todo:before {
     background-size: 16px 16px;
   }
 }
+span.todo_link {
+  color: #69767f;
+  text-decoration-line: line-through;
+}
+span.todo_link:before {
+  background-repeat: no-repeat;
+  content: ' ';
+  display: inline-block;
+  height: 16px;
+  margin-right: 2px;
+  background-image: url("http://localhost/31/public/assets/images//icons/16/grey/schedule.png");
+  vertical-align: text-top;
+  width: 16px;
+}
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  span.todo_link:before {
+    background-image: url("http://localhost/31/public/assets/images//icons/32/grey/schedule.png");
+    background-size: 16px 16px;
+  }
+}
