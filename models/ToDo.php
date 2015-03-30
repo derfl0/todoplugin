@@ -49,7 +49,11 @@ class ToDo extends SimpleORMap {
 
         // Security: can only do my own todos
         if ($todo->user_id == User::findCurrent()->id) {
+
+            // Calculate check md5 to remove from cache
+            $md5 = md5(User::findCurrent()->id . $todo->text . $todo->expires);
             $todo->delete();
+            return $md5;
         }
     }
 

@@ -18,14 +18,17 @@ class TodoPlugin extends StudIPPlugin implements SystemPlugin, PortalPlugin {
         // Insert new todo
         if (Request::submitted('new_todo')) {
             $todo = Todo::create(array(
-                'user_id' => User::findCurrent()->id,
-                'text' => Request::get('new_todo'),
-                'expires' => Request::get('todo_until') ? strtotime(Request::get('todo_until')) : null
+                        'user_id' => User::findCurrent()->id,
+                        'text' => Request::get('new_todo'),
+                        'expires' => Request::get('todo_until') ? strtotime(Request::get('todo_until')) : null
             ));
             $info[] = Request::get('new_todo');
             if (Request::get('todo_until')) {
                 $info[] = Request::get('todo_until');
             }
+
+            // Add to cache
+            self::addToCache($todo);
 
             // answer on xhr
             if (Request::isXhr()) {
@@ -51,7 +54,8 @@ class TodoPlugin extends StudIPPlugin implements SystemPlugin, PortalPlugin {
 
         // Delete todo
         if (Request::submitted('delete_todo')) {
-            ToDo::remove(Request::get('delete_todo'));
+            $md5 = ToDo::remove(Request::get('delete_todo'));
+            self::removeFromCache($md5);
         }
 
         // Register notification
@@ -59,10 +63,13 @@ class TodoPlugin extends StudIPPlugin implements SystemPlugin, PortalPlugin {
 
         // Register markup
         StudipFormat::addStudipMarkup('todoplugin', "\[todo\s?([^\]])*\]", "\[\/todo\]", 'TodoPlugin::markup');
-        
+
         // Register javascript for links
         PageLayout::addScript($this->getPluginURL() . '/assets/todo_everywhere.js');
         self::addStylesheet('/assets/style.less');
+
+        // Load sessioncache
+        self::loadCache();
     }
 
     public function getPortalTemplate() {
@@ -74,12 +81,12 @@ class TodoPlugin extends StudIPPlugin implements SystemPlugin, PortalPlugin {
 
         $todos = ToDo::getActive();
         $template->set_attribute("todos", $todos);
-        
+
         // Add help navigation
         $navigation = new Navigation('', 'http://docs.studip.de/help/2.5/de/Basis/PluginToDoWidget');
         $navigation->setImage('icons/16/blue/question.png', array('title' => _('Hilfe'), 'target' => '_blank'));
         $template->icons = array($navigation);
-        
+
         return $template;
     }
 
@@ -109,7 +116,26 @@ class TodoPlugin extends StudIPPlugin implements SystemPlugin, PortalPlugin {
         if ($matches[0] != "[todo]") {
             $linkParams['todo_until'] = trim(ltrim(rtrim($matches[0], ']'), '[todo'));
         }
-        return "<a class='todo_link' href='" . URLHelper::getLink('', $linkParams) . "'>" . $contents . "</a>";
+        $inCache = self::inCache($contents, $linkParams['todo_until']) ? 'accepted-todo ' : '';
+        return "<a class='{$inCache}todo_link' href='" . URLHelper::getLink('', $linkParams) . "'>" . $contents . "</a>";
+    }
+
+    public static function loadCache() {
+        if (!$_SESSION['todos']) {
+            $_SESSION['todos'] = DBManager::get()->fetchPairs('SELECT MD5(CONCAT(user_id,text,expires)) as cache, "true" as dummy  FROM todos WHERE user_id = ?', array(User::findCurrent()->id));
+        }
+    }
+
+    public static function addToCache($todo) {
+        $_SESSION['todos'][md5(User::findCurrent()->id . $todo->text . ($todo->expires))] = true;
+    }
+
+    public static function removeFromCache($md5) {
+        unset($_SESSION['todos'][$md5]);
+    }
+
+    public static function inCache($text, $expires = null) {
+        return $_SESSION['todos'][md5(User::findCurrent()->id . $text . strtotime($expires))];
     }
 
 }
