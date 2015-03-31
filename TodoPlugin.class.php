@@ -125,7 +125,7 @@ class TodoPlugin extends StudIPPlugin implements SystemPlugin, PortalPlugin {
         $inCache = self::inCache($contents, $linkParams['todo_until']) ? 'accepted-todo ' : '';
 
         // If todo already expired
-        if ($linkParams['todo_until'] && $linkParams['todo_until'] < time()) {
+        if ($linkParams['todo_until'] && strtotime($linkParams['todo_until']) < time()) {
             return "<span class='{$inCache}todo_link' href='" . URLHelper::getLink('', $linkParams) . "'>" . $contents . " (" . sprintf(dgettext('todos', 'Abgelaufen am %s'), $linkParams['todo_until']) . ")</span>";
         }
 
