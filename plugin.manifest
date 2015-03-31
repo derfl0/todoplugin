@@ -3,3 +3,4 @@ pluginclassname=TodoPlugin
 origin=intelec
 version=1.0
 studipMinVersion=3.1
+description=Ein Widget zur persönlichen Aufgabenverwaltung
