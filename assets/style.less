@@ -2,11 +2,25 @@ table.todos {
     margin-bottom: 0;
     tr {
         transition: all 333ms ease-in;
+        a {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            &.done {
+                .retina-background-icon('blue/accept.png');
+            }
+            &.delete {
+                .retina-background-icon('blue/trash.png');
+            }
+        }
         &.expired {
             background-color: #e8a0a0;
         }
         &.done {
             background-color: #cfe3c6;
+            a.done {
+                .retina-background-icon('blue/decline.png');
+            }
         }
         input {
             width: 100%;

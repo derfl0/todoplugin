@@ -42,7 +42,12 @@ class TodoPlugin extends StudIPPlugin implements SystemPlugin, PortalPlugin {
 
             PageLayout::postMessage(MessageBox::info(dgettext('todos', 'Neue Aufgabe hinzugefügt'), $info));
         }
-
+        
+        // Set swap todo status
+        if (Request::submitted('todo_swap')) {
+            ToDo::swap(Request::get('todo_swap'));
+        }
+/* Only check todo swap
         // Set todo as done
         if (Request::submitted('todo_done')) {
             ToDo::done(Request::get('todo_done'));
@@ -52,7 +57,7 @@ class TodoPlugin extends StudIPPlugin implements SystemPlugin, PortalPlugin {
         if (Request::submitted('todo_undo')) {
             ToDo::undo(Request::get('todo_undo'));
         }
-
+*/
         // Delete todo
         if (Request::submitted('delete_todo')) {
             $md5 = ToDo::remove(Request::get('delete_todo'));

@@ -89,11 +89,43 @@ table.todos {
 table.todos tr {
   transition: all 333ms ease-in;
 }
+table.todos tr a {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+}
+table.todos tr a.done {
+  background-image: url("http://localhost/31/public/assets/images//icons/16/blue/accept.png");
+}
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  table.todos tr a.done {
+    background-image: url("http://localhost/31/public/assets/images//icons/32/blue/accept.png");
+    background-size: 16px 16px;
+  }
+}
+table.todos tr a.delete {
+  background-image: url("http://localhost/31/public/assets/images//icons/16/blue/trash.png");
+}
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  table.todos tr a.delete {
+    background-image: url("http://localhost/31/public/assets/images//icons/32/blue/trash.png");
+    background-size: 16px 16px;
+  }
+}
 table.todos tr.expired {
   background-color: #e8a0a0;
 }
 table.todos tr.done {
   background-color: #cfe3c6;
+}
+table.todos tr.done a.done {
+  background-image: url("http://localhost/31/public/assets/images//icons/16/blue/decline.png");
+}
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  table.todos tr.done a.done {
+    background-image: url("http://localhost/31/public/assets/images//icons/32/blue/decline.png");
+    background-size: 16px 16px;
+  }
 }
 table.todos tr input {
   width: 100%;

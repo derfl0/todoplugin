@@ -44,6 +44,20 @@ class ToDo extends SimpleORMap {
         }
     }
 
+    public static function swap($id) {
+        $todo = self::find($id);
+
+        // Security: can only do my own todos
+        if ($todo->user_id == User::findCurrent()->id) {
+            if ($todo->done) {
+                $todo->done = NULL;
+            } else {
+                $todo->done = time();
+            }
+            $todo->store();
+        }
+    }
+
     public static function remove($id) {
         $todo = self::find($id);
 
