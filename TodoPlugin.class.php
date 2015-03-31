@@ -19,7 +19,7 @@ class TodoPlugin extends StudIPPlugin implements SystemPlugin, PortalPlugin {
         if (Request::submitted('new_todo')) {
             $todo = Todo::create(array(
                         'user_id' => User::findCurrent()->id,
-                        'text' => Request::get('new_todo'),
+                        'text' => studip_utf8decode(Request::get('new_todo')),
                         'expires' => Request::get('todo_until') ? strtotime(Request::get('todo_until')) : null
             ));
             $info[] = Request::get('new_todo');
@@ -35,6 +35,7 @@ class TodoPlugin extends StudIPPlugin implements SystemPlugin, PortalPlugin {
                 $templatefactory = new Flexi_TemplateFactory(__DIR__ . "/views");
                 $template = $templatefactory->open("show/todo.php");
                 $template->set_attribute("todo", $todo);
+                Header('Content-Type: text/plain;charset=windows-1252');
                 echo $template->render();
                 die;
             }
