@@ -6,6 +6,7 @@ $(document).ready(function () {
 STUDIP.todo = {
     init: function () {
         $('input[name="todo_until"]').datetimepicker({
+            format:'d.m.Y H:i',
             onClose: function () {
                 if ($('input[name="new_todo"]').val() !== '') {
                     $('form#new_todo_form').submit();
@@ -44,6 +45,13 @@ STUDIP.todo = {
             }
             if ($(this).hasClass('done')) {
                 $(this).parents('tr').toggleClass('done');
+            }
+            if ($(this).hasClass('edit')) {
+                var text = $.trim($(this).parents('tr').find('td').eq(0).text());
+                var until = $.trim($(this).parents('tr').find('td').eq(1).attr('data-jsdate'));
+                $('input[name="todo_until"]').val(until);
+                $('input[name="new_todo"]').val(text);
+                $(this).parents('tr').remove();
             }
             $.ajax({
                 url: url,

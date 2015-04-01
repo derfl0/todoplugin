@@ -12,6 +12,9 @@ table.todos {
             &.delete {
                 .retina-background-icon('blue/trash.png');
             }
+            &.edit {
+                .retina-background-icon('blue/edit.png');
+            }
         }
         &.expired {
             background-color: #e8a0a0;
@@ -24,6 +27,9 @@ table.todos {
         }
         input {
             width: 100%;
+        }
+        td.actions {
+            width: 30px;
         }
     }
     tbody tr:last-child td {
