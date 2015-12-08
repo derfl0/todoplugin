@@ -2,7 +2,7 @@
     <td>
         <?= htmlReady($todo->text) ?>
     </td>
-    <td data-jsdate="<?= strftime('%d.%m.%Y %H:%M', $todo->expires) ?>">
+    <td class=dateview" data-jsdate="<?= strftime('%d.%m.%Y %H:%M', $todo->expires) ?>">
         <?= htmlReady($todo->getDate()) ?>
     </td>
     <td class="actions">

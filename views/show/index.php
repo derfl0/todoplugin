@@ -1,9 +1,4 @@
 <table class="default todos">
-    <colgroup>
-        <col width="*">
-        <col width="0">
-        <col width="0">
-    </colgroup>
     <? foreach ($todos as $todo): ?>
         <?= $this->render_partial('show/todo.php', compact('todo')); ?>
     <? endforeach; ?>

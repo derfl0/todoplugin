@@ -26,11 +26,18 @@ table.todos {
             }
         }
         input {
-            width: 100%;
+            width: 100% !important;
+            box-sizing: border-box;
         }
-        td.actions {
-            width: 30px;
+        td {
+            white-space: nowrap;
         }
+      td:first-child {
+        width: 80%
+      }
+      &:last-child td:nth-child(0n+3) {
+        padding-left: 0;
+      }
     }
     tbody tr:last-child td {
         border-bottom: 0;
